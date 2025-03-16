@@ -6,12 +6,12 @@ class MNISTmodel(nn.Module):
     def __init__(self) -> None :
         super().__init__()
 
-        self.conv1 = nn.Conv2d(1,1,3)
-        self.conv2 = nn.Conv2d(1,1,3)
+        self.conv1 = nn.Conv2d(1,8,3)
+        self.conv2 = nn.Conv2d(8,16,3)
 
         self.pool = nn.MaxPool2d(2,1)
 
-        self.fc1 = nn.Linear(484,256)
+        self.fc1 = nn.Linear(484*16,256)
         self.fc2 = nn.Linear(256, 10)
 
         self.dr = nn.Dropout(p=0.2)

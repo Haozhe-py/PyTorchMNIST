@@ -44,18 +44,30 @@ def test():
     test_loss /= len(test_loader.dataset)
     accuracy = 100. * correct / len(test_loader.dataset)
     print(f'\nTest set: Average loss: {test_loss:.4f}, Accuracy: {correct}/{len(test_loader.dataset)} ({accuracy:.2f}%)\n')
+    return accuracy
 
-def fit(epochs:int = 2) -> None:
+def fit(epochs:int = 20, patience:int = 3) -> None:
     assert epochs > 0 , 'epochs must be larger than 0.'
-    model.train()
+    assert patience >= 0, 'patience must be 0 or larger than 0.'
+    max_acc = 0
+    waiting = 0
     for i in range(1,epochs+1):
+        model.train()
         train_step(i)
         print('\n\n')
-        test()
+        acc = test()
+        if acc > max_acc:
+            max_acc = acc
+            waiting = 0
+            torch.save(model, 'model.pt')                                                       #model checkpoint: save best only
+        else:
+            waiting += 1
+        if waiting > patience:
+            print(f'Early Stopping: at Epoch {i}/{epochs} . ')                                  #early stopping
+            break
         continue
     return None
 
 if __name__ == '__main__':
     fit()
-    torch.save(model, 'model.pt')
     exit()
