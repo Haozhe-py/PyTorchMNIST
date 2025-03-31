@@ -1,2 +1,3 @@
-### TensorAI ###
-Test png files
+# TensorAI (PyTorchMNIST)
+
+Test pictures for `TensorAI`.
